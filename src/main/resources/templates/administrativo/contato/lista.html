@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
 
 
-    <title>lista tipo de Sacramentos</title>
+    <title>lista de Contato</title>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"></link>
@@ -33,7 +33,7 @@
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr6yBc0QQ1CCxo4CnFnx2FS49M24saWf5u5g&s"
                  alt="Logo" width="40" height="40" class="rounded-circle">
-            <span class="ms-3 text-white font-weight-bold"> Lista Tipo de Sacramentos </span>
+            <span class="ms-3 text-white font-weight-bold"> Lista de Contatos </span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
@@ -52,32 +52,33 @@
 </nav>
 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Lista Tipo de Sacramentos</h1>
+    <h1 class="text-center mb-4">Lista Contatos</h1>
     <table class="table table-striped" id="tabela">
         <thead class="bg-primary text-white">
         <tr>
             <td>Id</td>
-            <td>local do Sacramento</td>
-            <td>Data e hora</td>
-            <td>Pessoa a Receber</td>
-            <td>Tipo do Sacramento</td>
+            <td>Celular</td>
+            <td>Telefone de Contato</td>
+            <td>Email</td>
+            <td>Pessoa</td>
+
             <td>Ação</td>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="sacramento: ${listaSacramento}">
-            <td th:text="${sacramento.id}"></td>
-            <td th:text="${sacramento.localSacramento}"></td>
-            <td th:text="${sacramento.dataHoraSacramento}"></td>
-            <td th:text="${sacramento.pessoa.nome}"></td>
-            <td th:text="${sacramento.tipoSacramento.nomeSacramento}"></td>
+        <tr th:each="contato: ${listaContato}">
+            <td th:text="${contato.id}"></td>
+            <td th:text="${contato.celular}"></td>
+            <td th:text="${contato.telContato}"></td>
+            <td th:text="${contato.email}"></td>
+            <td th:text="${contato.pessoa.nome}"></td>
             <td colspan="2">
-                <a th:href="@{/editarSacramento/{id}(id=${sacramento.id})}" class="btn btn-sm btn-primary">
+                <a th:href="@{/editarContato/{id}(id=${contato.id})}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i> Editar
                 </a>
 
-                <a th:href="@{/removerSacramento/{id}(id=${sacramento.id})}" class="btn btn-sm btn-danger">
+                <a th:href="@{/removerContato/{id}(id=${contato.id})}" class="btn btn-sm btn-danger">
                     <i class="fa-solid fa-trash"></i> Excluir
                 </a>
             </td>
@@ -87,7 +88,7 @@
     </table>
 
     <a class="btn btn-danger" href="/administrativo"><i class="fa-solid fa-rotate-left"></i> Voltar</a>
-    <a class="btn btn-primary" href="/cadastroSacramento"><i class="fa-solid fa-address-card" style="color: white"></i>
+    <a class="btn btn-primary" href="/cadastroContato"><i class="fa-solid fa-address-card" style="color: white"></i>
         Cadastrar</a>
 
 </div>

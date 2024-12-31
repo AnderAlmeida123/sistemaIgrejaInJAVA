@@ -16,7 +16,7 @@ public class Sacramento implements Serializable {
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "localSsacramento", length = 255, nullable = false)
+    @Column(name = "localSacramento", length = 255, nullable = false)
     private String localSacramento;
 
     @Column(name = "dataHoraSacramento", nullable = false)

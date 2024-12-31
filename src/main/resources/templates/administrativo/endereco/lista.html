@@ -72,7 +72,15 @@
         <tbody>
         <tr th:each="endereco: ${listaEndereco}">
             <td th:text="${endereco.id}"></td>
-            <td th:text="${endereco.nomeSacramento}"></td>
+            <td th:text="${endereco.cep}"></td>
+            <td th:text="${endereco.estado}"></td>
+            <td th:text="${endereco.cep}"></td>
+            <td th:text="${endereco.cidade}"></td>
+            <td th:text="${endereco.bairro}"></td>
+            <td th:text="${endereco.rua}"></td>
+            <td th:text="${endereco.numero}"></td>
+            <td th:text="${endereco.referencia}"></td>
+            <td th:text="${endereco.pessoa.nome}"></td>
             <td colspan="2">
                 <a th:href="@{/editarEndereco/{id}(id=${endereco.id})}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i> Editar

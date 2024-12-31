@@ -3,6 +3,7 @@ package com.projeto.sistemaIgreja.controller;
 
 import com.projeto.sistemaIgreja.models.TipoEvento;
 import com.projeto.sistemaIgreja.repository.TipoEventoRepositorio;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ public class TipoEventoControle {
     }
 
     @PostMapping("/salvarTipoEvento")
-    public ModelAndView salvar(TipoEvento tipoEvento, BindingResult result) {
+    public ModelAndView salvar(@Valid TipoEvento tipoEvento, BindingResult result) {
         if (result.hasErrors()) {
             return cadastrar(tipoEvento);
         }
