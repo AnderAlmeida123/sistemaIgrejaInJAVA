@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="https://thymeleaf.org"
+        xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
+
+
+    <title>lista de Dizimo</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"></link>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr6yBc0QQ1CCxo4CnFnx2FS49M24saWf5u5g&s"
+                 alt="Logo" width="40" height="40" class="rounded-circle">
+            <span class="ms-3 text-white font-weight-bold"> Lista do Dízimista </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link active" href="/administrativo"><i class="fa-solid fa-house"></i>
+                    Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-info-circle"></i> Sobre</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-address-book"></i> Dizimo</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Lista do Dízimista</h1>
+    <table class="table table-striped" id="tabela">
+        <thead class="bg-primary text-white">
+        <tr>
+            <td>Id</td>
+            <td>Mês Pago</td>
+            <td>Valor Pago</td>
+            <td>Tipo do Pagamento</td>
+            <!--            <td>Responsável do Dízimo</td>-->
+            <td>Nome da Pessoa</td>
+            <td>Ação</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="dizimo: ${listaDizimo}">
+            <td th:text="${dizimo.id}"></td>
+            <td th:text="${dizimo.mes}"></td>
+            <td th:text="${dizimo.valor}"></td>
+            <td th:text="${dizimo.tipoPagamento}"></td>
+            <!--            <td th:text="${dizimo.responsavel}"></td>-->
+            <td th:text="${dizimo.pessoa.nome}"></td>
+            <td colspan="2">
+                <a th:href="@{/editarDizimo/{id}(id=${dizimo.id})}" class="btn btn-sm btn-primary">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                </a>
+
+                <a th:href="@{/removerDizimo/{id}(id=${dizimo.id})}" class="btn btn-sm btn-danger">
+                    <i class="fa-solid fa-trash"></i> Excluir
+                </a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <a class="btn btn-danger" href="/administrativo"><i class="fa-solid fa-rotate-left"></i> Voltar</a>
+    <a class="btn btn-primary" href="/cadastroDizimo"><i class="fa-solid fa-address-card" style="color: white"></i>
+        Cadastrar</a>
+
+</div>
+
+<!-- JavaScript (Opcional) -->
+<!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+<script
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"
+></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
+        integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+
+<script>$(document).ready(function () {
+    $('#tabela').DataTable();
+});
+var table = new DataTable('#tabela', {
+    language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json',
+    },
+});
+</script>
+</body>
+</html>
