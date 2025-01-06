@@ -52,7 +52,7 @@
             <h4 class="mb-0">Formulário de Pagamento</h4>
         </div>
         <div class="card-body">
-            <form action="/salvarDizimo" th:object="${dizimo}" method="POST">
+            <form action="/salvarDizimo" th:object="${dizimo}" method="POST" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="id">ID</label>
@@ -79,6 +79,7 @@
                             <option value="Novembro">Novembro</option>
                             <option value="Dezembro">Dezembro</option>
                         </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('mes')}" th:errors="*{mes}"></small>
                     </div>
 
                     <!-- Campo Valor -->
@@ -86,6 +87,7 @@
                         <label for="valor">Valor</label>
                         <input type="text" required class="form-control" id="valor" th:field="*{valor}"
                                placeholder="Digite o valor..." />
+                        <small class="text-danger" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -96,22 +98,9 @@
                             <option value="Cartao">Cartão (Crédito ou Débito)</option>
                             <option value="Dinheiro">Dinheiro (A vista)</option>
                         </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('tipoPagamento')}" th:errors="*{tipoPagamento}"></small>
                     </div>
 
-                    <!-- Campo Responsável -->
-<!--                    <div class="form-group col-md-6">-->
-<!--                        <label for="responsavelsim">Responsável?</label>-->
-<!--                        <div class="form-check">-->
-<!--                            <input class="form-check-input" type="radio" name="responsavel" id="responsavelSim"-->
-<!--                                   th:field="*{responsavel}" value="Sim" required />-->
-<!--                            <label class="form-check-label" for="responsavelSim">Sim</label>-->
-<!--                        </div>-->
-<!--                        <div class="form-check">-->
-<!--                            <input class="form-check-input" type="radio" name="responsavel" id="responsavelNao"-->
-<!--                                   th:field="*{responsavel}" value="Nao" />-->
-<!--                            <label class="form-check-label" for="responsavelNao">Não</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
 
                 <div class="form-group">
@@ -120,6 +109,7 @@
                         <option value="">Selecione...</option>
                         <option th:each="est: ${listaPessoa}" th:value="${est.id}" th:text="${est.nome}"></option>
                     </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('pessoa')}" th:errors="*{pessoa}"></small>
                 </div>
                 <div class="form-group text-right">
                     <button type="submit" class="btn btn-primary">
@@ -142,12 +132,47 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        // Adicionando máscara no campo de valor-->
+<!--        $('#valor').mask('0000000.00',{ reverse: true }, {placeholder: "R$:__,_"});-->
+<!--    });-->
+<!--</script>-->
 <script>
-    $(document).ready(function () {
-        // Adicionando máscara no campo de valor
-        $('#valor').mask('0000000.00', { reverse: true });
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            {id: "mes", mensagem: "O Mês é obrigatório."},
+            {id: "valor", mensagem: "O Valor do Estado é obrigatório."},
+            {id: "tipoPagamento", mensagem: "O Tipo de Pagamento é obrigatório."},
+            {id: "pessoa", mensagem: "O nome da Pessoa é obrigatório."},
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores e bordas de erro
+        document.querySelectorAll(".text-danger").forEach((small) => (small.textContent = ""));
+        document.querySelectorAll(".form-control").forEach((input) => input.classList.remove("is-invalid"));
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                input.classList.add("is-invalid");
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
     });
 </script>
+
 </body>
 
 </html>

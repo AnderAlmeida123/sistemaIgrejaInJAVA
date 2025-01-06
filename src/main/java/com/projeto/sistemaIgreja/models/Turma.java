@@ -2,6 +2,8 @@ package com.projeto.sistemaIgreja.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
@@ -15,13 +17,18 @@ public class Turma implements Serializable {
     @GeneratedValue(strategy =  GenerationType.AUTO)
 
     private Long id;
-    private String turma;
+
+    @NotBlank(message = "Nome da Turma é obrigatório.")
+    private String turmaNome;
+    @NotBlank(message = "Nome da Descrição é obrigatório.")
     private String descricao;
 
     @ManyToOne
+    @NotNull(message = "Pessoa é obrigatório")
     private Pessoa pessoa;
 
     @ManyToOne
+    @NotNull(message = "Setor é obrigatório.")
     private Setor setor;
 
     public Long getId() {
@@ -32,35 +39,35 @@ public class Turma implements Serializable {
         this.id = id;
     }
 
-    public String getTurma() {
-        return turma;
+    public @NotBlank(message = "Nome da Turma é obrigatório.") String getTurmaNome() {
+        return turmaNome;
     }
 
-    public void setTurma(String turma) {
-        this.turma = turma;
+    public void setTurmaNome(@NotBlank(message = "Nome da Turma é obrigatório.") String turmaNome) {
+        this.turmaNome = turmaNome;
     }
 
-    public String getDescricao() {
+    public @NotBlank(message = "Nome da Descrição é obrigatório.") String getDescricao() {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao(@NotBlank(message = "Nome da Descrição é obrigatório.") String descricao) {
         this.descricao = descricao;
     }
 
-    public Pessoa getPessoa() {
+    public @NotNull(message = "Pessoa é obrigatório") Pessoa getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(@NotNull(message = "Pessoa é obrigatório") Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 
-    public Setor getSetor() {
+    public @NotNull(message = "Setor é obrigatório.") Setor getSetor() {
         return setor;
     }
 
-    public void setSetor(Setor setor) {
+    public void setSetor(@NotNull(message = "Setor é obrigatório.") Setor setor) {
         this.setor = setor;
     }
 }

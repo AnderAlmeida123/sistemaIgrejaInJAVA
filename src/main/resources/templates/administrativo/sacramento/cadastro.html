@@ -52,24 +52,26 @@
             <h4 class="mb-0">Formulário de Cadastro</h4>
         </div>
         <div class="card-body">
-            <form action="/salvarSacramento" th:object="${sacramento}" method="POST">
+            <form action="/salvarSacramento" th:object="${sacramento}" method="POST" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="id">ID</label>
                         <input type="text" readonly class="form-control" id="id" th:field="*{id}"/>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="localSacramento">Local do Sacramento</label>
-                        <input type="text" required class="form-control" id="localSacramento"
-                               th:field="*{localSacramento}"/>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="dataHoraSacramento">Data e Hora do Sacramento</label>
-                        <input type="text" required class="form-control date_time" id="dataHoraSacramento"
-                               th:field="*{dataHoraSacramento}"/>
-                    </div>
+                <div class="form-group">
+                    <label for="dataHoraSacramento">Data e Hora do Sacramento</label>
+                    <input type="text" required class="form-control" id="dataHoraSacramento" th:field="*{dataHoraSacramento}"/>
+                    <small class="text-danger" th:if="${#fields.hasErrors('dataHoraSacramento')}" th:errors="*{dataHoraSacramento}"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="comunidade">Local de Sacramento</label>
+                    <select id="comunidade" th:field="*{comunidade}" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option th:each="est: ${listaComunidade}" th:value="${est.id}" th:text="${est.nomeComunidade}"></option>
+                    </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('comunidade')}" th:errors="*{comunidade}"></small>
                 </div>
 
                 <div class="form-group">
@@ -78,14 +80,16 @@
                         <option value="">Selecione...</option>
                         <option th:each="est: ${listaPessoa}" th:value="${est.id}" th:text="${est.nome}"></option>
                     </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('pessoa')}" th:errors="*{pessoa}"></small>
                 </div>
+
                 <div class="form-group">
                     <label for="tipoSacramento">Tipo de Sacramento</label>
                     <select id="tipoSacramento" th:field="*{tipoSacramento}" class="form-control">
                         <option value="">Selecione...</option>
-                        <option th:each="est: ${listaTipoSacramento}" th:value="${est.id}"
-                                th:text="${est.nomeSacramento}"></option>
+                        <option th:each="est: ${listaTipoSacramento}" th:value="${est.id}" th:text="${est.nomeSacramento}"></option>
                     </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('tipoSacramento')}" th:errors="*{tipoSacramento}"></small>
                 </div>
 
                 <div class="form-group text-right">
@@ -111,9 +115,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.date_time').mask('00/00/0000 00:00:00');
+        $('#dataHoraSacramento').mask("00/00/0000 00:00:00", {placeholder: "__/__/____ , __:__:__ "});
     });
 </script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            { id: "dataHoraSacramento", mensagem: "A Data e Hora é obrigatório." },
+            { id: "comunidade", mensagem: "O Nome da Comunidade é obrigatório." },
+            { id: "pessoa", mensagem: "O Nome da Pessoa é obrigatório." },
+            { id: "tipoSacramento", mensagem: "O Sacramento a receber é obrigatório." },
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores
+        document.querySelectorAll(".text-danger").forEach(function (small) {
+            small.textContent = "";
+        });
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+
 </body>
 
 </html>

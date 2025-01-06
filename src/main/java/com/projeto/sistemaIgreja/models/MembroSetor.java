@@ -2,8 +2,14 @@ package com.projeto.sistemaIgreja.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 
 @Entity
@@ -11,19 +17,27 @@ import java.io.Serializable;
 public class MembroSetor implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String dataEntrada;
-    private String dataSaida;
+
+    @NotNull(message = "A data de entrada é obrigatória.")
+    @PastOrPresent(message = "A data de entrada deve ser no passado ou presente.")
+    private LocalDate dataEntrada;
+
+    @FutureOrPresent(message = "A data de saída deve ser no presente ou futuro.")
+    private LocalDate dataSaida;
+
 
     @ManyToOne
     @JoinColumn(name = "membroId", nullable = false)
+    @NotNull (message = "A pessoa associada ao setor é obrigatória.")
     private Pessoa pessoa;
 
     @ManyToOne
     @JoinColumn(name = "setorId", nullable = false)
+    @NotNull (message = "O setor é obrigatório.")
     private Setor setor;
 
     public Long getId() {
@@ -34,35 +48,35 @@ public class MembroSetor implements Serializable {
         this.id = id;
     }
 
-    public String getDataEntrada() {
+    public @NotNull(message = "A data de entrada é obrigatória.") @PastOrPresent(message = "A data de entrada deve ser no passado ou presente.") LocalDate getDataEntrada() {
         return dataEntrada;
     }
 
-    public void setDataEntrada(String dataEntrada) {
+    public void setDataEntrada(@NotNull(message = "A data de entrada é obrigatória.") @PastOrPresent(message = "A data de entrada deve ser no passado ou presente.") LocalDate dataEntrada) {
         this.dataEntrada = dataEntrada;
     }
 
-    public String getDataSaida() {
+    public @FutureOrPresent(message = "A data de saída deve ser no presente ou futuro.") LocalDate getDataSaida() {
         return dataSaida;
     }
 
-    public void setDataSaida(String dataSaida) {
+    public void setDataSaida(@FutureOrPresent(message = "A data de saída deve ser no presente ou futuro.") LocalDate dataSaida) {
         this.dataSaida = dataSaida;
     }
 
-    public Pessoa getPessoa() {
+    public @NotNull(message = "A pessoa associada ao setor é obrigatória.") Pessoa getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(@NotNull(message = "A pessoa associada ao setor é obrigatória.") Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 
-    public Setor getSetor() {
+    public @NotNull(message = "O setor é obrigatório.") Setor getSetor() {
         return setor;
     }
 
-    public void setSetor(Setor setor) {
+    public void setSetor(@NotNull(message = "O setor é obrigatório.") Setor setor) {
         this.setor = setor;
     }
 }

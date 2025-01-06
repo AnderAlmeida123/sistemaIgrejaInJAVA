@@ -1,6 +1,7 @@
 package com.projeto.sistemaIgreja.controller;
 
 
+import com.projeto.sistemaIgreja.models.Sacramento;
 import com.projeto.sistemaIgreja.models.TipoEvento;
 import com.projeto.sistemaIgreja.repository.TipoEventoRepositorio;
 import jakarta.validation.Valid;
@@ -33,32 +34,41 @@ public class TipoEventoControle {
     @PostMapping("/salvarTipoEvento")
     public ModelAndView salvar(@Valid TipoEvento tipoEvento, BindingResult result) {
         if (result.hasErrors()) {
-            return cadastrar(tipoEvento);
+            ModelAndView mv = new ModelAndView("administrativo/tipoEvento/cadastro");
+            mv.addObject("tipoEvento", tipoEvento);
+            mv.addObject("erros", result.getAllErrors());
+            return mv;
         }
 
         tipoEventoRepositorio.saveAndFlush(tipoEvento);
-        return cadastrar(new TipoEvento());
+        return new ModelAndView("redirect:/listarTipoEvento");
     }
-
 
     @GetMapping("/editarTipoEvento/{id}")
     public ModelAndView editar(@PathVariable("id") Long id) {
         Optional<TipoEvento> tipoEvento = tipoEventoRepositorio.findById(id);
-        return cadastrar(tipoEvento.orElse(new TipoEvento()));
+        // Caso não encontre o tipoEvento, redireciona para a lista
+        if (!tipoEvento.isPresent()) {
+            return listar();
+        }
+        return cadastrar(tipoEvento.get());
     }
 
-        @GetMapping("/listarTipoEvento")
-    public ModelAndView listar(){
+    @GetMapping("/listarTipoEvento")
+    public ModelAndView listar() {
         ModelAndView mv = new ModelAndView("administrativo/tipoEvento/lista");
         mv.addObject("listaTipoEvento", tipoEventoRepositorio.findAll());
         return mv;
-        }
+    }
 
-        @GetMapping("/removerTipoEvento/{id}")
-    public ModelAndView remover(@PathVariable("id") Long id){
+    @GetMapping("/removerTipoEvento/{id}")
+    public ModelAndView remover(@PathVariable("id") Long id) {
         Optional<TipoEvento> tipoEvento = tipoEventoRepositorio.findById(id);
-        tipoEventoRepositorio.delete(tipoEvento.get());
-        return listar();
+        // Verifica se o tipoEvento existe antes de excluir
+        if (tipoEvento.isPresent()) {
+            tipoEventoRepositorio.delete(tipoEvento.get());
         }
+        return listar();
+    }
 
 }

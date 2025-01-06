@@ -2,6 +2,7 @@ package com.projeto.sistemaIgreja.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,19 +17,20 @@ public class Sacramento implements Serializable {
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "localSacramento", length = 255, nullable = false)
-    private String localSacramento;
-
-    @Column(name = "dataHoraSacramento", nullable = false)
+    @NotNull(message = "A data e hora do sacramento são obrigatórias.")
     private LocalDateTime dataHoraSacramento;
 
     @ManyToOne
-    @JoinColumn(name = "pessoaId", nullable = false)
+    @NotNull(message = "A pessoa é obrigatória.")
     private Pessoa pessoa;
 
     @ManyToOne
-    @JoinColumn(name = "tipoSacramentoId", nullable = false)
+    @NotNull(message = "O tipo de sacramento é obrigatório.")
     private TipoSacramento tipoSacramento;
+
+    @ManyToOne
+    @NotNull(message = "O local do sacramento é obrigatório.")
+    private Comunidade comunidade;
 
     public Long getId() {
         return id;
@@ -38,35 +40,35 @@ public class Sacramento implements Serializable {
         this.id = id;
     }
 
-    public String getLocalSacramento() {
-        return localSacramento;
-    }
-
-    public void setLocalSacramento(String localSacramento) {
-        this.localSacramento = localSacramento;
-    }
-
-    public LocalDateTime getDataHoraSacramento() {
+    public @NotNull(message = "A data e hora do sacramento são obrigatórias.") LocalDateTime getDataHoraSacramento() {
         return dataHoraSacramento;
     }
 
-    public void setDataHoraSacramento(LocalDateTime dataHoraSacramento) {
+    public void setDataHoraSacramento(@NotNull(message = "A data e hora do sacramento são obrigatórias.") LocalDateTime dataHoraSacramento) {
         this.dataHoraSacramento = dataHoraSacramento;
     }
 
-    public Pessoa getPessoa() {
+    public @NotNull(message = "A pessoa é obrigatória.") Pessoa getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(@NotNull(message = "A pessoa é obrigatória.") Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 
-    public TipoSacramento getTipoSacramento() {
+    public @NotNull(message = "O tipo de sacramento é obrigatório.") TipoSacramento getTipoSacramento() {
         return tipoSacramento;
     }
 
-    public void setTipoSacramento(TipoSacramento tipoSacramento) {
+    public void setTipoSacramento(@NotNull(message = "O tipo de sacramento é obrigatório.") TipoSacramento tipoSacramento) {
         this.tipoSacramento = tipoSacramento;
+    }
+
+    public @NotNull(message = "O local do sacramento é obrigatório.") Comunidade getComunidade() {
+        return comunidade;
+    }
+
+    public void setComunidade(@NotNull(message = "O local do sacramento é obrigatório.") Comunidade comunidade) {
+        this.comunidade = comunidade;
     }
 }

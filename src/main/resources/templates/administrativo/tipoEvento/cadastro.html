@@ -74,31 +74,28 @@
             <h4 class="mb-0">Formulário de Cadastro</h4>
         </div>
         <div class="card-body">
-            <form action="/salvarTipoEvento" th:object="${tipoEvento}" method="POST">
+            <form action="/salvarTipoEvento" th:object="${tipoEvento}" method="POST" novalidate>
 
                 <div class="form-group">
                     <div class="form-group col-md-6">
                         <label for="id">Id</label>
-                        <input type="text" readonly="true" class="form-control" id="id" th:field="*{id}" />
+                        <input type="text" readonly="true" class="form-control" id="id" th:field="*{id}"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-group col-md-6">
                         <label for="nomeEvento">Tipo de Evento:</label>
                         <input type="text" class="form-control" id="nomeEvento" th:field="*{nomeEvento}"/>
-
                         <!-- Exibir erro de validação para o campo nomeEvento -->
-
-                        <div class="text-danger" th:if="${#fields.hasErrors('nomeEvento')}"
-                             th:errors="*{nomeEvento}"></div>
-
+                        <small class="text-danger"></small>
                     </div>
                 </div>
                 <div class="form-group text-right">
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar
                     </button>
                     <a class="btn btn-danger" href="/administrativo"><i class="fa-solid fa-rotate-left"></i> Voltar</a>
-                    <a class="btn btn-success" href="/listarTipoEvento"><i class="fa-solid fa-table-list"></i> Listar</a>
+                    <a class="btn btn-success" href="/listarTipoEvento"><i class="fa-solid fa-table-list"></i>
+                        Listar</a>
                 </div>
             </form>
         </div>
@@ -122,5 +119,38 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"
 ></script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            { id: "nomeEvento", mensagem: "O Nome do Evento é obrigatório." },
+
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores
+        document.querySelectorAll(".text-danger").forEach(function (small) {
+            small.textContent = "";
+        });
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
+    });
+</script>
+
 </body>
 </html>

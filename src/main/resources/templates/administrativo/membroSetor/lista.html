@@ -60,6 +60,7 @@
             <th>Data de Entrada</th>
             <th>Data de Saída</th>
             <th>Pessoa</th>
+            <th>Setor</th>
             <th>Ação</th>
         </tr>
         </thead>
@@ -69,6 +70,7 @@
             <td th:text="${membroSetor.dataEntrada}"></td>
             <td th:text="${membroSetor.dataSaida}"></td>
             <td th:text="${membroSetor.pessoa.nome}"></td>
+            <td th:text="${membroSetor.setor.setorNome}"></td>
             <td>
                 <a th:href="@{/editarMembroSetor/{id}(id=${membroSetor.id})}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i> Editar

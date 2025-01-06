@@ -2,6 +2,7 @@ package com.projeto.sistemaIgreja.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class TipoEvento implements Serializable {
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false) // Garante que o valor não seja nulo
+    @NotNull(message = "O nome do evento é obrigatório.")
     @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "O nome deve conter apenas letras")
     private String nomeEvento;
 

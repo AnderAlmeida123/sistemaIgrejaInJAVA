@@ -6,6 +6,7 @@ import com.projeto.sistemaIgreja.repository.ComunidadeRepositorio;
 import com.projeto.sistemaIgreja.repository.PessoaRepositorio;
 import com.projeto.sistemaIgreja.repository.SetorRepositorio;
 import com.projeto.sistemaIgreja.repository.TurmaRepositorio;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,9 @@ public class TurmaControle {
 
     @GetMapping("/cadastroTurma")
     public ModelAndView cadastrar(Turma turma) {
+        if (turma == null) {
+            turma = new Turma();
+        }
         ModelAndView mv = new ModelAndView("administrativo/turma/cadastro"); //redireciona para o html
         mv.addObject("turma", turma);
         mv.addObject("listaPessoa", pessoaRepositorio.findAll());
@@ -36,36 +40,44 @@ public class TurmaControle {
     }
 
     @PostMapping("/salvarTurma")
-    public ModelAndView salvar(Turma turma, BindingResult result) {
+    public ModelAndView salvar(@Valid Turma turma, BindingResult result) {
         if (result.hasErrors()) {
-            return cadastrar(turma);
+            ModelAndView mv = new ModelAndView("administrativo/turma/cadastro"); //redireciona para o html
+            mv.addObject("turma", turma);
+            mv.addObject("listaPessoa", pessoaRepositorio.findAll());
+            mv.addObject("listaSetor", setorRepositorio.findAll());
+            return mv;
         }
 
         turmaRepositorio.saveAndFlush(turma);
-        return cadastrar(new Turma());
+        return new ModelAndView("redirect:/listarTurma");
     }
 
 
-
-        @GetMapping("/editarTurma/{id}")
-        public ModelAndView editar (@PathVariable("id") Long id){
-            Optional<Turma> turma = turmaRepositorio.findById(id);
-            return cadastrar(turma.get());
+    @GetMapping("/editarTurma/{id}")
+    public ModelAndView editar(@PathVariable("id") Long id) {
+        Optional<Turma> turma = turmaRepositorio.findById(id);
+        if (!turma.isPresent()) {
+            return listar();
         }
+        return cadastrar(turma.get());
+    }
 
 
-        @GetMapping("/listarTurma")
-    public ModelAndView listar(){
+    @GetMapping("/listarTurma")
+    public ModelAndView listar() {
         ModelAndView mv = new ModelAndView("administrativo/turma/lista");
         mv.addObject("listaTurma", turmaRepositorio.findAll());
         return mv;
-        }
+    }
 
-        @GetMapping("/removerTurma/{id}")
-    public ModelAndView remover(@PathVariable("id") Long id){
+    @GetMapping("/removerTurma/{id}")
+    public ModelAndView remover(@PathVariable("id") Long id) {
         Optional<Turma> turma = turmaRepositorio.findById(id);
-        turmaRepositorio.delete(turma.get());
-        return listar();
+        if (turma.isPresent()) {
+            turmaRepositorio.delete(turma.get());
         }
+        return listar();
+    }
 
 }

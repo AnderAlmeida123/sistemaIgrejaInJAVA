@@ -5,6 +5,7 @@ import com.projeto.sistemaIgreja.models.Dizimo;
 import com.projeto.sistemaIgreja.repository.PessoaRepositorio;
 import com.projeto.sistemaIgreja.repository.SetorRepositorio;
 import com.projeto.sistemaIgreja.repository.DizimoRepositorio;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,9 @@ public class DizimoControle {
 
     @GetMapping("/cadastroDizimo")
     public ModelAndView cadastrar(Dizimo dizimo) {
+        if (dizimo == null) {
+            dizimo = new Dizimo();
+        }
         ModelAndView mv = new ModelAndView("administrativo/dizimo/cadastro"); //redireciona para o html
         mv.addObject("dizimo", dizimo);
         mv.addObject("listaPessoa", pessoaRepositorio.findAll());
@@ -33,36 +37,44 @@ public class DizimoControle {
     }
 
     @PostMapping("/salvarDizimo")
-    public ModelAndView salvar(Dizimo dizimo, BindingResult result) {
+    public ModelAndView salvar(@Valid Dizimo dizimo, BindingResult result) {
         if (result.hasErrors()) {
-            return cadastrar(dizimo);
+            ModelAndView mv = new ModelAndView("administrativo/dizimo/cadastro"); //redireciona para o html
+            mv.addObject("dizimo", dizimo);
+            mv.addObject("listaPessoa", pessoaRepositorio.findAll());
+            mv.addObject("erros", result.getAllErrors());
+            return mv;
         }
 
         dizimoRepositorio.saveAndFlush(dizimo);
-        return cadastrar(new Dizimo());
+        return new ModelAndView("redirect:/listarDizimo");
     }
 
 
-
-        @GetMapping("/editarDizimo/{id}")
-        public ModelAndView editar (@PathVariable("id") Long id){
-            Optional<Dizimo> dizimo = dizimoRepositorio.findById(id);
-            return cadastrar(dizimo.get());
+    @GetMapping("/editarDizimo/{id}")
+    public ModelAndView editar(@PathVariable("id") Long id) {
+        Optional<Dizimo> dizimo = dizimoRepositorio.findById(id);
+        if (!dizimo.isPresent()) {
+            return listar();
         }
+        return cadastrar(dizimo.get());
+    }
 
 
-        @GetMapping("/listarDizimo")
-    public ModelAndView listar(){
+    @GetMapping("/listarDizimo")
+    public ModelAndView listar() {
         ModelAndView mv = new ModelAndView("administrativo/dizimo/lista");
         mv.addObject("listaDizimo", dizimoRepositorio.findAll());
         return mv;
-        }
+    }
 
-        @GetMapping("/removerDizimo/{id}")
-    public ModelAndView remover(@PathVariable("id") Long id){
+    @GetMapping("/removerDizimo/{id}")
+    public ModelAndView remover(@PathVariable("id") Long id) {
         Optional<Dizimo> dizimo = dizimoRepositorio.findById(id);
-        dizimoRepositorio.delete(dizimo.get());
-        return listar();
+        if (dizimo.isPresent()) {
+            dizimoRepositorio.delete(dizimo.get());
         }
+        return listar();
+    }
 
 }

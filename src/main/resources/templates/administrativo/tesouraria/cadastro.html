@@ -112,7 +112,7 @@
                             <select id="setor" th:field="*{setor}" class="form-control">
                                 <option value="">Selecione Setor...</option>
                                 <option th:each="est: ${listaSetor}" th:value="${est.id}"
-                                        th:text="${est.setor}"></option>
+                                        th:text="${est.setorNome}"></option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -152,6 +152,45 @@
         $('#dataMovimentacao').mask('00/00/0000');
     });
 </script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            {id: "cep", mensagem: "O Cep é obrigatório."},
+            {id: "estado", mensagem: "O nome do Estado é obrigatório."},
+            {id: "cidade", mensagem: "O nome da Cidade é obrigatório."},
+            {id: "bairro", mensagem: "O nome do Bairro é obrigatório."},
+            {id: "rua", mensagem: "O nome da Rua é obrigatório."},
+            {id: "numero", mensagem: "O campo Número deve ser preenchido."},
+            {id: "referencia", mensagem: "O ponto de Referência é obrigatório."},
+            {id: "pessoa", mensagem: "A pessoa deve ser selecionada."}
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores e bordas de erro
+        document.querySelectorAll(".text-danger").forEach((small) => (small.textContent = ""));
+        document.querySelectorAll(".form-control").forEach((input) => input.classList.remove("is-invalid"));
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                input.classList.add("is-invalid");
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
+    });
+</script>
+
 </body>
 
 </html>

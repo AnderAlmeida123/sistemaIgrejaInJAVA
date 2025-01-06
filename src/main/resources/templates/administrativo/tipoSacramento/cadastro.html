@@ -75,13 +75,7 @@
         </div>
         <div class="card-body">
 
-            <!-- Exibir erro geral do formulário -->
-
-<!--            <div class="alert alert-danger" th:if="${#fields.hasErrors()}" role="alert">-->
-<!--                O formulário contém erros. Por favor, corrija os campos destacados.-->
-<!--            </div>-->
-
-            <form action="/salvarTipoSacramento" th:object="${tipoSacramento}" method="POST">
+            <form action="/salvarTipoSacramento" th:object="${tipoSacramento}" method="POST" novalidate>
 
                 <div class="form-group">
                     <div class="form-group col-md-6">
@@ -93,11 +87,8 @@
                     <div class="form-group col-md-6">
                         <label for="nomeSacramento">Tipo de Sacramento:</label>
                         <input type="text" class="form-control" id="nomeSacramento" th:field="*{nomeSacramento}"/>
-
                         <!-- Exibir erro de validação para o campo nomeSacramento -->
-
-                        <div class="text-danger" th:if="${#fields.hasErrors('nomeSacramento')}"
-                             th:errors="*{nomeSacramento}"></div>
+                        <small class="text-danger"></small>
                     </div>
                 </div>
 
@@ -130,5 +121,37 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"
 ></script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            { id: "nomeSacramento", mensagem: "O Nome do Sacramento é obrigatório." },
+
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores
+        document.querySelectorAll(".text-danger").forEach(function (small) {
+            small.textContent = "";
+        });
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>

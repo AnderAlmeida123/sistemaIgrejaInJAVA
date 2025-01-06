@@ -2,6 +2,8 @@ package com.projeto.sistemaIgreja.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
@@ -13,14 +15,13 @@ public class Comunidade implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy =  GenerationType.AUTO)
-
     private Long id;
-    private String nomeComunidade;
-    private String bairro;
 
-    @ManyToOne
-    @JoinColumn(name = "responsavelId", nullable = false)
-    private Pessoa pessoa;
+    @NotBlank(message = "O nome da Comunidade é obrigatório.")
+    private String nomeComunidade;
+
+    @NotBlank(message = "O nome do Bairro é obrigatório.")
+    private String bairro;
 
     public Long getId() {
         return id;
@@ -30,27 +31,19 @@ public class Comunidade implements Serializable {
         this.id = id;
     }
 
-    public String getNomeComunidade() {
+    public @NotBlank(message = "O nome da Comunidade é obrigatório.") String getNomeComunidade() {
         return nomeComunidade;
     }
 
-    public void setNomeComunidade(String nomeComunidade) {
+    public void setNomeComunidade(@NotBlank(message = "O nome da Comunidade é obrigatório.") String nomeComunidade) {
         this.nomeComunidade = nomeComunidade;
     }
 
-    public String getBairro() {
+    public @NotBlank(message = "O nome do Bairro é obrigatório.") String getBairro() {
         return bairro;
     }
 
-    public void setBairro(String bairro) {
+    public void setBairro(@NotBlank(message = "O nome do Bairro é obrigatório.") String bairro) {
         this.bairro = bairro;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
     }
 }

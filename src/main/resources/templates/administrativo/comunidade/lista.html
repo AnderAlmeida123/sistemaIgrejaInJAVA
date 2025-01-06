@@ -59,7 +59,6 @@
             <td>Id</td>
             <td>Nome da comunidade</td>
             <td>Bairro</td>
-            <td>Responsavel pela Comunidade</td>
             <td>Ação</td>
         </tr>
         </thead>
@@ -69,7 +68,6 @@
             <td th:text="${comunidade.id}"></td>
             <td th:text="${comunidade.nomeComunidade}"></td>
             <td th:text="${comunidade.bairro}"></td>
-            <td th:text="${comunidade.pessoa.nome}"></td>
             <td colspan="2">
                 <a th:href="@{/editarComunidade/{id}(id=${comunidade.id})}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i> Editar

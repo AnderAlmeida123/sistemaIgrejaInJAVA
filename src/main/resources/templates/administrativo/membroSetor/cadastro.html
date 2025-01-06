@@ -3,14 +3,14 @@
 
 <head>
     <!-- Meta tags Obrigatórias -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          crossorigin="anonymous" />
+          crossorigin="anonymous"/>
 
     <title>Cadastro de Membro de Setor</title>
 </head>
@@ -52,23 +52,25 @@
             <h4 class="mb-0">Formulário de Cadastro</h4>
         </div>
         <div class="card-body">
-            <form action="/salvarMembroSetor" th:object="${membroSetor}" method="POST">
+            <form action="/salvarMembroSetor" th:object="${membroSetor}" method="POST" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="id">ID</label>
-                        <input type="text" readonly class="form-control" id="id" th:field="*{id}" />
+                        <input type="text" readonly class="form-control" id="id" th:field="*{id}"/>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="dataEntrada">Data de Entrada</label>
-                        <input type="text" required class="form-control" id="dataEntrada"
-                               th:field="*{dataEntrada}" placeholder="dd/mm/aaaa" />
+                        <input type="text" class="form-control" id="dataEntrada" th:field="*{dataEntrada}" required />
+                        <small class="text-danger" th:if="${#fields.hasErrors('dataEntrada')}" th:errors="*{dataEntrada}"></small>
                     </div>
+
                     <div class="form-group col-md-6">
                         <label for="dataSaida">Data de Saída</label>
                         <input type="text" required class="form-control" id="dataSaida"
-                               th:field="*{dataSaida}" placeholder="dd/mm/aaaa" />
+                               th:field="*{dataSaida}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('dataSaida')}" th:errors="*{dataSaida}"></small>
                     </div>
                 </div>
 
@@ -78,7 +80,18 @@
                         <option value="">Selecione...</option>
                         <option th:each="est: ${listaPessoa}" th:value="${est.id}" th:text="${est.nome}"></option>
                     </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('pessoa')}" th:errors="*{pessoa}"></small>
                 </div>
+
+                <div class="form-group">
+                    <label for="setorNome">Setor</label>
+                    <select id="setorNome" th:field="*{setor}" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option th:each="est: ${listaSetor}" th:value="${est.id}" th:text="${est.setorNome}"></option>
+                    </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('setor')}" th:errors="*{setor}"></small>
+                </div>
+
 
                 <div class="form-group text-right">
                     <button type="submit" class="btn btn-primary">
@@ -104,7 +117,41 @@
 <script>
     $(document).ready(function () {
         // Aplica máscara para os campos de data no formato dd/mm/yyyy
-        $('#dataEntrada, #dataSaida').mask('00/00/0000');
+        $('#dataEntrada,#dataSaida').mask("00/00/0000", {placeholder: "__/__/____"});
+    });
+</script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            {id: "dataEntrada", mensagem: "A Data de Início é obrigatório."},
+            {id: "dataSaida", mensagem: "A Data de Saída é obrigatório."},
+            {id: "pessoa", mensagem: "O nome da Pessoa é obrigatório."},
+            {id: "setor", mensagem: "O nome do Setor é obrigatório."}
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores e bordas de erro
+        document.querySelectorAll(".text-danger").forEach((small) => (small.textContent = ""));
+        document.querySelectorAll(".form-control").forEach((input) => input.classList.remove("is-invalid"));
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                input.classList.add("is-invalid");
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
     });
 </script>
 </body>

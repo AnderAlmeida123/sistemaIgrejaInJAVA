@@ -5,6 +5,7 @@ import com.projeto.sistemaIgreja.models.MembroSetor;
 import com.projeto.sistemaIgreja.repository.MembroSetorRepositorio;
 import com.projeto.sistemaIgreja.repository.PessoaRepositorio;
 import com.projeto.sistemaIgreja.repository.SetorRepositorio;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,9 @@ public class MembroSetorControle {
 
     @GetMapping("/cadastroMembroSetor")
     public ModelAndView cadastrar(MembroSetor membroSetor) {
+        if (membroSetor == null) {
+            membroSetor = new MembroSetor();
+        }
         ModelAndView mv = new ModelAndView("administrativo/membroSetor/cadastro"); //redireciona para o html
         mv.addObject("membroSetor", membroSetor);
         mv.addObject("listaPessoa", pessoaRepositorio.findAll());
@@ -35,19 +39,28 @@ public class MembroSetorControle {
     }
 
     @PostMapping("/salvarMembroSetor")
-    public ModelAndView salvar(MembroSetor membroSetor, BindingResult result) {
+    public ModelAndView salvar(@Valid MembroSetor membroSetor, BindingResult result) {
         if (result.hasErrors()) {
-            return cadastrar(membroSetor);
+            ModelAndView mv = new ModelAndView("administrativo/membroSetor/cadastro"); //redireciona para o html
+            mv.addObject("membroSetor", membroSetor);
+            mv.addObject("listaPessoa", pessoaRepositorio.findAll());
+            mv.addObject("listaSetor", setorRepositorio.findAll());
+            mv.addObject("erros", result.getAllErrors());
+            return mv;
         }
 
         membroSetorRepositorio.saveAndFlush(membroSetor);
-        return cadastrar(new MembroSetor());
+        return new ModelAndView("redirect:/listarMembroSetor");
     }
 
 
     @GetMapping("/editarMembroSetor/{id}")
     public ModelAndView editar(@PathVariable("id") Long id) {
         Optional<MembroSetor> membroSetor = membroSetorRepositorio.findById(id);
+        // Caso não encontre o membroSetor, redireciona para a lista
+        if (!membroSetor.isPresent()) {
+            return listar();
+        }
         return cadastrar(membroSetor.get());
     }
 
@@ -62,7 +75,10 @@ public class MembroSetorControle {
     @GetMapping("/removerMembroSetor/{id}")
     public ModelAndView remover(@PathVariable("id") Long id) {
         Optional<MembroSetor> membroSetor = membroSetorRepositorio.findById(id);
-        membroSetorRepositorio.delete(membroSetor.get());
+        // Verifica se o endereco existe antes de excluir
+        if (membroSetor.isPresent()) {
+            membroSetorRepositorio.delete(membroSetor.get());
+        }
         return listar();
     }
 

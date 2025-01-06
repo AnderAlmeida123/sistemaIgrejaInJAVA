@@ -52,7 +52,7 @@
             <h4 class="mb-0">Formulário de Cadastro</h4>
         </div>
         <div class="card-body">
-            <form action="/salvarEndereco" th:object="${endereco}" method="POST">
+            <form action="/salvarEndereco" th:object="${endereco}" method="POST" novalidate>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -64,44 +64,58 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="cep">Cep</label>
-                        <input type="text" required class="form-control " id="cep"
-                               th:field="*{cep}"/>
+                        <input type="text" required class="form-control " id="cep" th:field="*{cep}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="estado">Estado</label>
                         <input type="text" required class="form-control" id="estado"
                                th:field="*{estado}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="cidade">Cidade</label>
                         <input type="text" required class="form-control" id="cidade"
                                th:field="*{cidade}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('cidade')}" th:errors="*{cidade}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="bairro">Bairro</label>
                         <input type="text" required class="form-control" id="bairro"
                                th:field="*{bairro}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="rua">Rua</label>
                         <input type="text" required class="form-control" id="rua"
                                th:field="*{rua}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('rua')}" th:errors="*{rua}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="numero">Número</label>
                         <input type="text" required class="form-control" id="numero"
                                th:field="*{numero}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></small>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="referencia">Referência</label>
                         <input type="text" required class="form-control" id="referencia"
                                th:field="*{referencia}"/>
+                        <!-- Exibir erro de validação para o campo nomeEvento -->
+                        <small class="text-danger" th:if="${#fields.hasErrors('referencia')}"
+                               th:errors="*{referencia}"></small>
                     </div>
                 </div>
 
@@ -111,6 +125,8 @@
                         <option value="">Selecione...</option>
                         <option th:each="est: ${listaPessoa}" th:value="${est.id}" th:text="${est.nome}"></option>
                     </select>
+                    <!-- Exibir erro de validação para o campo nomeEvento -->
+                    <small class="text-danger" th:if="${#fields.hasErrors('pessoa')}" th:errors="*{pessoa}"></small>
                 </div>
 
                 <div class="form-group text-right">
@@ -136,9 +152,50 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.phone_with_ddd').mask('(00) 0000-0000');
+        $('#cep').mask("00000-000", {placeholder: "_____-___"});
+
     });
 </script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            {id: "cep", mensagem: "O Cep é obrigatório."},
+            {id: "estado", mensagem: "O nome do Estado é obrigatório."},
+            {id: "cidade", mensagem: "O nome da Cidade é obrigatório."},
+            {id: "bairro", mensagem: "O nome do Bairro é obrigatório."},
+            {id: "rua", mensagem: "O nome da Rua é obrigatório."},
+            {id: "numero", mensagem: "O campo Número deve ser preenchido."},
+            {id: "referencia", mensagem: "O ponto de Referência é obrigatório."},
+            {id: "pessoa", mensagem: "A pessoa deve ser selecionada."}
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores e bordas de erro
+        document.querySelectorAll(".text-danger").forEach((small) => (small.textContent = ""));
+        document.querySelectorAll(".form-control").forEach((input) => input.classList.remove("is-invalid"));
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                input.classList.add("is-invalid");
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+
 </body>
 
 </html>

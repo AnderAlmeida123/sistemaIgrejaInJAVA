@@ -68,10 +68,10 @@
         <tbody>
         <tr th:each="turma: ${listaTurma}">
             <td th:text="${turma.id}"></td>
-            <td th:text="${turma.Turma}"></td>
+            <td th:text="${turma.turmaNome}"></td>
             <td th:text="${turma.descricao}"></td>
             <td th:text="${turma.pessoa.nome}"></td>
-            <td th:text="${turma.setor.setor}"></td>
+            <td th:text="${turma.setor.setorNome}"></td>
             <td colspan="2">
                 <a th:href="@{/editarTurma/{id}(id=${turma.id})}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i> Editar

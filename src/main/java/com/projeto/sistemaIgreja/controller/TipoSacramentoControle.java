@@ -23,6 +23,9 @@ public class TipoSacramentoControle {
 
     @GetMapping("/cadastroTipoSacramento")
     public ModelAndView cadastrar(TipoSacramento tipoSacramento) {
+        if (tipoSacramento == null) {
+            tipoSacramento = new TipoSacramento();
+        }
         ModelAndView mv = new ModelAndView("administrativo/tipoSacramento/cadastro"); //redireciona para o html
         mv.addObject("tipoSacramento", tipoSacramento);
         return mv;
@@ -31,34 +34,43 @@ public class TipoSacramentoControle {
     @PostMapping("/salvarTipoSacramento")
     public ModelAndView salvar(@Valid TipoSacramento tipoSacramento, BindingResult result) {
         if (result.hasErrors()) {
-            return cadastrar(tipoSacramento);
+            ModelAndView mv = new ModelAndView("administrativo/tipoSacramento/cadastro"); //redireciona para o html
+            mv.addObject("tipoSacramento", tipoSacramento);
+            mv.addObject("erros", result.getAllErrors());
+            return mv;
         }
 
         tipoSacramentoRepositorio.saveAndFlush(tipoSacramento);
-        return cadastrar(new TipoSacramento());
+        return new ModelAndView("redirect:/listarTipoSacramento");
     }
 
 
-
-        @GetMapping("/editarTipoSacramento/{id}")
-        public ModelAndView editar (@PathVariable("id") Long id){
-            Optional<TipoSacramento> tipoSacramento = tipoSacramentoRepositorio.findById(id);
-            return cadastrar(tipoSacramento.get());
+    @GetMapping("/editarTipoSacramento/{id}")
+    public ModelAndView editar(@PathVariable("id") Long id) {
+        Optional<TipoSacramento> tipoSacramento = tipoSacramentoRepositorio.findById(id);
+        // Caso não encontre o tipoSacramento, redireciona para a lista
+        if (!tipoSacramento.isPresent()) {
+            return listar();
         }
+        return cadastrar(tipoSacramento.get());
+    }
 
 
-        @GetMapping("/listarTipoSacramento")
-    public ModelAndView listar(){
+    @GetMapping("/listarTipoSacramento")
+    public ModelAndView listar() {
         ModelAndView mv = new ModelAndView("administrativo/tipoSacramento/lista");
         mv.addObject("listaTipoSacramento", tipoSacramentoRepositorio.findAll());
         return mv;
-        }
+    }
 
-        @GetMapping("/removerTipoSacramento/{id}")
-    public ModelAndView remover(@PathVariable("id") Long id){
+    @GetMapping("/removerTipoSacramento/{id}")
+    public ModelAndView remover(@PathVariable("id") Long id) {
         Optional<TipoSacramento> tipoSacramento = tipoSacramentoRepositorio.findById(id);
-        tipoSacramentoRepositorio.delete(tipoSacramento.get());
-        return listar();
+        // Verifica se o tipoSacramento existe antes de excluir
+        if (tipoSacramento.isPresent()) {
+            tipoSacramentoRepositorio.delete(tipoSacramento.get());
         }
+        return listar();
+    }
 
 }

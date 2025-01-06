@@ -52,7 +52,7 @@
             <h4 class="mb-0">Formulário de Cadastro</h4>
         </div>
         <div class="card-body">
-            <form action="/salvarComunidade" th:object="${comunidade}" method="POST">
+            <form action="/salvarComunidade" th:object="${comunidade}" method="POST" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="id">ID</label>
@@ -64,21 +64,23 @@
                         <label for="nomeComunidade">Nome da Comunidade</label>
                         <input type="text" required class="form-control" id="nomeComunidade"
                                th:field="*{nomeComunidade}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('nomeComunidade')}" th:errors="*{nomeComunidade}"></small>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="bairro">Bairro</label>
                         <input type="text" required class="form-control" id="bairro"
                                th:field="*{bairro}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}"></small>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="pessoa">Pessoa</label>
-                    <select id="pessoa" th:field="*{pessoa}" class="form-control">
-                        <option value="">Selecione...</option>
-                        <option th:each="est: ${listaPessoa}" th:value="${est.id}" th:text="${est.nome}"></option>
-                    </select>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label for="pessoa">Pessoa</label>-->
+<!--                    <select id="pessoa" th:field="*{pessoa}" class="form-control">-->
+<!--                        <option value="">Selecione...</option>-->
+<!--                        <option th:each="est: ${listaPessoa}" th:value="${est.id}" th:text="${est.nome}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
 
                 <div class="form-group text-right">
                     <button type="submit" class="btn btn-primary">
@@ -101,11 +103,40 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
 <script>
-    $(document).ready(function () {
-        $('.phone_with_ddd').mask('(00) 0000-0000');
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            { id: "nomeComunidade", mensagem: "Comunidade é obrigatório." },
+            { id: "bairro", mensagem: "O nome do Bairro da Comunidade é obrigatório." },
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores
+        document.querySelectorAll(".text-danger").forEach(function (small) {
+            small.textContent = "";
+        });
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
     });
 </script>
+
 </body>
 
 </html>

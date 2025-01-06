@@ -59,7 +59,7 @@
             <td>Id</td>
             <td>Nome do setor</td>
             <td>Descrição</td>
-            <td>Responsavel pela Setor</td>
+            <td>Responsavel pelo Setor</td>
             <td>Comunidade</td>
             <td>Ação</td>
         </tr>
@@ -68,7 +68,7 @@
         <tbody>
         <tr th:each="setor: ${listaSetor}">
             <td th:text="${setor.id}"></td>
-            <td th:text="${setor.Setor}"></td>
+            <td th:text="${setor.setorNome}"></td>
             <td th:text="${setor.descricao}"></td>
             <td th:text="${setor.pessoa.nome}"></td>
             <td th:text="${setor.comunidade.nomeComunidade}"></td>

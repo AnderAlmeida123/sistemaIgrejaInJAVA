@@ -6,6 +6,7 @@ import com.projeto.sistemaIgreja.repository.MembroTurmaRepositorio;
 import com.projeto.sistemaIgreja.repository.PessoaRepositorio;
 import com.projeto.sistemaIgreja.repository.SetorRepositorio;
 import com.projeto.sistemaIgreja.repository.TurmaRepositorio;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,9 @@ public class MembroTurmaControle {
 
     @GetMapping("/cadastroMembroTurma")
     public ModelAndView cadastrar(MembroTurma membroTurma) {
+        if (membroTurma == null) {
+            membroTurma = new MembroTurma();
+        }
         ModelAndView mv = new ModelAndView("administrativo/membroTurma/cadastro"); //redireciona para o html
         mv.addObject("membroTurma", membroTurma);
         mv.addObject("listaPessoa", pessoaRepositorio.findAll());
@@ -36,19 +40,27 @@ public class MembroTurmaControle {
     }
 
     @PostMapping("/salvarMembroTurma")
-    public ModelAndView salvar(MembroTurma membroTurma, BindingResult result) {
+    public ModelAndView salvar(@Valid MembroTurma membroTurma, BindingResult result) {
         if (result.hasErrors()) {
-            return cadastrar(membroTurma);
+            ModelAndView mv = new ModelAndView("administrativo/membroTurma/cadastro"); //redireciona para o html
+            mv.addObject("membroTurma", membroTurma);
+            mv.addObject("listaPessoa", pessoaRepositorio.findAll());
+            mv.addObject("listaTurma", turmaRepositorio.findAll());
+            mv.addObject("erros", result.getAllErrors());
+            return mv;
         }
 
         membroTurmaRepositorio.saveAndFlush(membroTurma);
-        return cadastrar(new MembroTurma());
+        return new ModelAndView("redirect:/listarMembroTurma");
     }
 
 
     @GetMapping("/editarMembroTurma/{id}")
     public ModelAndView editar(@PathVariable("id") Long id) {
         Optional<MembroTurma> membroTurma = membroTurmaRepositorio.findById(id);
+        if (!membroTurma.isPresent()) {
+            return listar();
+        }
         return cadastrar(membroTurma.get());
     }
 
@@ -63,7 +75,9 @@ public class MembroTurmaControle {
     @GetMapping("/removerMembroTurma/{id}")
     public ModelAndView remover(@PathVariable("id") Long id) {
         Optional<MembroTurma> membroTurma = membroTurmaRepositorio.findById(id);
-        membroTurmaRepositorio.delete(membroTurma.get());
+        if (membroTurma.isPresent()) {
+            membroTurmaRepositorio.delete(membroTurma.get());
+        }
         return listar();
     }
 
