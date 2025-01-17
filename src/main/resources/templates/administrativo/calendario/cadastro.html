@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous"/>
+
+    <title>Cadastro de Calendario</title>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr6yBc0QQ1CCxo4CnFnx2FS49M24saWf5u5g&s"
+                 alt="Logo" width="40" height="40" class="rounded-circle">
+            <span>Cadastro de Calendario</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/administrativo"><i class="fa-solid fa-house"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-info-circle"></i> Sobre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-address-book"></i> Calendario</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Conteúdo -->
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Formulário de Cadastro</h4>
+        </div>
+        <div class="card-body">
+            <form action="/salvarCalendario" th:object="${calendario}" method="POST" novalidate>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id">ID</label>
+                        <input type="text" readonly class="form-control" id="id" th:field="*{id}"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="tituloEvento">Titulo do Evento</label>
+                        <input type="text" required class="form-control " id="tituloEvento"
+                               th:field="*{tituloEvento}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('tituloEvento')}" th:errors="*{tituloEvento}"></small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="dataHora">Data e Hora do Evento</label>
+                        <input type="text" required class="form-control" id="dataHora"
+                               th:field="*{dataHora}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('dataHora')}" th:errors="*{dataHora}"></small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="descricao">Descrição do Evento</label>
+                        <input type="text" required class="form-control" id="descricao"
+                               th:field="*{descricao}" />
+                        <small class="text-danger" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comunidade">Comunidade</label>
+                    <select id="comunidade" th:field="*{comunidade}" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option th:each="est: ${listaComunidade}" th:value="${est.id}" th:text="${est.nomeComunidade}"></option>
+                    </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('comunidade')}" th:errors="*{comunidade}"></small>
+                </div>
+                <div class="form-group">
+                    <label for="tipoEvento">Classificação do Evento</label>
+                    <select id="tipoEvento" th:field="*{tipoEvento}" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option th:each="est: ${listaTipoEvento}" th:value="${est.id}" th:text="${est.nomeEvento}"></option>
+                    </select>
+                    <small class="text-danger" th:if="${#fields.hasErrors('tipoEvento')}" th:errors="*{tipoEvento}"></small>
+                </div>
+
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar
+                    </button>
+                    <a class="btn btn-danger" href="/administrativo">
+                        <i class="fa-solid fa-rotate-left"></i> Voltar
+                    </a>
+                    <a class="btn btn-success" href="/listarCalendario">
+                        <i class="fa-solid fa-table-list"></i> Listar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Máscara para Data e Hora (Formato: DD/MM/YYYY HH:mm)
+        $('#dataHora').mask('00/00/0000 00:00', {placeholder: "DD/MM/AAAA HH:mm"});
+    });
+</script>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const campos = [
+            { id: "tituloEvento", mensagem: "O Titulo do Evento  é obrigatório." },
+            { id: "dataHora", mensagem: "A Data e Hora é obrigatório." },
+            { id: "descricao", mensagem: "A Descrição é obrigatório." },
+            { id: "comunidade", mensagem: "A Comunidade deve ser selecionada." }
+            { id: "tipoEvento", mensagem: "O Tipo de Evento deve ser selecionada." }
+        ];
+
+        let possuiErro = false;
+
+        // Limpa mensagens de erro anteriores e bordas de erro
+        document.querySelectorAll(".text-danger").forEach((small) => (small.textContent = ""));
+        document.querySelectorAll(".form-control").forEach((input) => input.classList.remove("is-invalid"));
+
+        // Validação dos campos
+        campos.forEach(function (campo) {
+            const input = document.getElementById(campo.id);
+            const valor = input.value.trim();
+            const pequenoErro = input.parentElement.querySelector("small");
+
+            if (!valor) {
+                pequenoErro.textContent = campo.mensagem;
+                input.classList.add("is-invalid");
+                possuiErro = true;
+            }
+        });
+
+        // Impede o envio do formulário caso haja erros
+        if (possuiErro) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+</body>
+
+</html>

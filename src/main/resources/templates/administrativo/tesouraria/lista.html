@@ -74,7 +74,7 @@
             <td th:text="${tesouraria.descricao}"></td>
             <td th:text="${tesouraria.valor}"></td>
             <td th:text="${tesouraria.dataMovimentacao}"></td>
-            <td th:text="${tesouraria.setor.setor}"></td>
+            <td th:text="${tesouraria.setor.setorNome}"></td>
             <td th:text="${tesouraria.comunidade.nomeComunidade}"></td>
             <td colspan="2">
                 <a th:href="@{/editarTesouraria/{id}(id=${tesouraria.id})}" class="btn btn-sm btn-primary">

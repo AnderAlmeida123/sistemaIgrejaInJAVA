@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -22,6 +23,9 @@ public class Comunidade implements Serializable {
 
     @NotBlank(message = "O nome do Bairro é obrigatório.")
     private String bairro;
+
+    @OneToMany(mappedBy = "comunidade", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Calendario> calendarios;
 
     public Long getId() {
         return id;
@@ -45,5 +49,13 @@ public class Comunidade implements Serializable {
 
     public void setBairro(@NotBlank(message = "O nome do Bairro é obrigatório.") String bairro) {
         this.bairro = bairro;
+    }
+
+    public List<Calendario> getCalendarios() {
+        return calendarios;
+    }
+
+    public void setCalendarios(List<Calendario> calendarios) {
+        this.calendarios = calendarios;
     }
 }
