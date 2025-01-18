@@ -31,12 +31,12 @@ public class MembroSetor implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "membroId", nullable = false)
+    @JoinColumn(name = "membro_id", nullable = false)
     @NotNull (message = "A pessoa associada ao setor é obrigatória.")
     private Pessoa pessoa;
 
     @ManyToOne
-    @JoinColumn(name = "setorId", nullable = false)
+    @JoinColumn(name = "setor_id", nullable = false)
     @NotNull (message = "O setor é obrigatório.")
     private Setor setor;
 

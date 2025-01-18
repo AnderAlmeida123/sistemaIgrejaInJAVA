@@ -15,7 +15,7 @@ public class Comunidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "O nome da Comunidade é obrigatório.")
@@ -24,8 +24,6 @@ public class Comunidade implements Serializable {
     @NotBlank(message = "O nome do Bairro é obrigatório.")
     private String bairro;
 
-    @OneToMany(mappedBy = "comunidade", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Calendario> calendarios;
 
     public Long getId() {
         return id;
@@ -51,11 +49,47 @@ public class Comunidade implements Serializable {
         this.bairro = bairro;
     }
 
-    public List<Calendario> getCalendarios() {
-        return calendarios;
+
+//    Relações das tabelas
+
+    @OneToMany(mappedBy = "comunidade", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Calendario> calendario;
+    @OneToMany(mappedBy = "comunidade", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Setor> setor;
+    @OneToMany(mappedBy = "comunidade", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sacramento> sacramento;
+    @OneToMany(mappedBy = "comunidade", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tesouraria> tesouraria;
+
+    public List<Calendario> getCalendario() {
+        return calendario;
     }
 
-    public void setCalendarios(List<Calendario> calendarios) {
-        this.calendarios = calendarios;
+    public void setCalendario(List<Calendario> calendari) {
+        this.calendario = calendario;
+    }
+
+    public List<Setor> getSetor() {
+        return setor;
+    }
+
+    public void setSetor(List<Setor> setor) {
+        this.setor = setor;
+    }
+
+    public List<Sacramento> getSacramento() {
+        return sacramento;
+    }
+
+    public void setSacramento(List<Sacramento> sacramento) {
+        this.sacramento = sacramento;
+    }
+
+    public List<Tesouraria> getTesouraria() {
+        return tesouraria;
+    }
+
+    public void setTesouraria(List<Tesouraria> tesouraria) {
+        this.tesouraria = tesouraria;
     }
 }

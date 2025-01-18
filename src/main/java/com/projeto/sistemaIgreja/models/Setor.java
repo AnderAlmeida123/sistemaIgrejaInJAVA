@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.security.PrivateKey;
+import java.util.List;
 
 
 @Entity
@@ -15,7 +16,7 @@ public class Setor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "Nome do Setor é Obrigatorio")
@@ -25,12 +26,15 @@ public class Setor implements Serializable {
     private String descricao;
 
     @ManyToOne
+    @JoinColumn(name = "pessoa_id")
     @NotNull(message = "Nome da Pessoa é Obrigatorio")
     private Pessoa pessoa;
 
     @ManyToOne
+    @JoinColumn(name = "comunidade_id")
     @NotNull(message = "Nome da Comunidade é Obrigatorio")
     private Comunidade comunidade;
+
 
     public Long getId() {
         return id;
@@ -70,5 +74,51 @@ public class Setor implements Serializable {
 
     public void setComunidade(@NotNull(message = "Nome da Comunidade é Obrigatorio") Comunidade comunidade) {
         this.comunidade = comunidade;
+    }
+
+
+//    Relações das tabelas
+
+
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Estoque> estoque;
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MembroSetor> membroSetor;
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tesouraria> tesouraria;
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Turma> turma;
+
+
+    public List<Estoque> getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(List<Estoque> estoque) {
+        this.estoque = estoque;
+    }
+
+    public List<MembroSetor> getMembroSetor() {
+        return membroSetor;
+    }
+
+    public void setMembroSetor(List<MembroSetor> membroSetor) {
+        this.membroSetor = membroSetor;
+    }
+
+    public List<Tesouraria> getTesouraria() {
+        return tesouraria;
+    }
+
+    public void setTesouraria(List<Tesouraria> tesouraria) {
+        this.tesouraria = tesouraria;
+    }
+
+    public List<Turma> getTurma() {
+        return turma;
+    }
+
+    public void setTurma(List<Turma> turma) {
+        this.turma = turma;
     }
 }

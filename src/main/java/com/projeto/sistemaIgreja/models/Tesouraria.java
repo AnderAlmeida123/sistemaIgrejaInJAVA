@@ -39,8 +39,9 @@ public class Tesouraria implements Serializable {
     @NotNull(message = "O setor é obrigatório.")
     private Setor setor;
 
-    @OneToOne
+    @ManyToOne
     @NotNull(message = "A comunidade é obrigatória.")
+    @JoinColumn(name = "comunidade_id")
     private Comunidade comunidade;
 
     // Getters e Setters

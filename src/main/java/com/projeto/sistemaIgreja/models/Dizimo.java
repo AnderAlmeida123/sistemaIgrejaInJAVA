@@ -26,6 +26,7 @@ public class Dizimo implements Serializable {
     private String tipoPagamento;
 
     @ManyToOne
+    @JoinColumn(name = "pessoa_id")
     @NotNull(message = "A pessoa é obrigatória.")
     private Pessoa pessoa;
 

@@ -31,7 +31,7 @@ public class Contato implements Serializable {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "pessoaId", nullable = false)
+    @JoinColumn(name = "pessoa_id", nullable = false)
     @NotNull(message = "A pessoa associada ao contato é obrigatória.")
     private Pessoa pessoa;
 

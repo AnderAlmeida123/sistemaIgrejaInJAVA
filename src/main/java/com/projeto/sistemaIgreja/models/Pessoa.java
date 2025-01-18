@@ -44,11 +44,6 @@ public class Pessoa implements Serializable {
     @NotNull(message = "A Comunidade deve ser selecionada.")
     private Comunidade comunidade;
 
-//    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Endereco> endereco; // Uma pessoa pode ter vários endereços
-//
-//    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Contato> contato; // Uma pessoa pode ter vários contatos
 
     // Getters e Setters
 
@@ -109,11 +104,78 @@ public class Pessoa implements Serializable {
     }
 
 
-//    public List<Endereco> getEnderecos() {
-//        return endereco;
-//    }
-//
-//    public void setEnderecos(List<Endereco> enderecos) {
-//        this.endereco = enderecos;
-//    }
+    //    Relações das tabelas
+
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contato> contato;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dizimo> dizimo;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Endereco> endereco;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Setor> setor;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MembroSetor> membroSetor;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MembroTurma> membroTurma;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Turma> turma;
+
+
+    public List<Contato> getContato() {
+        return contato;
+    }
+
+    public void setContato(List<Contato> contato) {
+        this.contato = contato;
+    }
+
+    public List<Dizimo> getDizimo() {
+        return dizimo;
+    }
+
+    public void setDizimo(List<Dizimo> dizimo) {
+        this.dizimo = dizimo;
+    }
+
+    public List<Endereco> getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(List<Endereco> endereco) {
+        this.endereco = endereco;
+    }
+
+    public List<Setor> getSetor() {
+        return setor;
+    }
+
+    public void setSetor(List<Setor> setor) {
+        this.setor = setor;
+    }
+
+    public List<MembroSetor> getMembroSetor() {
+        return membroSetor;
+    }
+
+    public void setMembroSetor(List<MembroSetor> membroSetor) {
+        this.membroSetor = membroSetor;
+    }
+
+    public List<MembroTurma> getMembroTurma() {
+        return membroTurma;
+    }
+
+    public void setMembroTurma(List<MembroTurma> membroTurma) {
+        this.membroTurma = membroTurma;
+    }
+
+    public List<Turma> getTurma() {
+        return turma;
+    }
+
+    public void setTurma(List<Turma> turma) {
+        this.turma = turma;
+    }
 }

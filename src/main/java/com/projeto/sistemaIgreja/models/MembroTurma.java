@@ -28,12 +28,12 @@ public class MembroTurma implements Serializable {
     private LocalDate dataTermino;
 
     @ManyToOne
-    @JoinColumn(name = "membroId", nullable = false)
+    @JoinColumn(name = "membro_id", nullable = false)
     @NotNull (message = "A pessoa associada ao setor é obrigatória.")
     private Pessoa pessoa;
 
     @ManyToOne
-    @JoinColumn(name = "turmaId", nullable = false)
+    @JoinColumn(name = "turma_id", nullable = false)
     @NotNull (message = "O turma é obrigatório.")
     private Turma turma;
 

@@ -26,9 +26,11 @@ public class Sacramento implements Serializable {
 
     @ManyToOne
     @NotNull(message = "O tipo de sacramento é obrigatório.")
+    @JoinColumn(name = "tipoSacramento_id")
     private TipoSacramento tipoSacramento;
 
     @ManyToOne
+    @JoinColumn(name = "comunidade_id")
     @NotNull(message = "O local do sacramento é obrigatório.")
     private Comunidade comunidade;
 
