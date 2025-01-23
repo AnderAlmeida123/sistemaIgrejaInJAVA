@@ -80,8 +80,7 @@ public class Setor implements Serializable {
 //    Relações das tabelas
 
 
-    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Estoque> estoque;
+
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MembroSetor> membroSetor;
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -90,13 +89,6 @@ public class Setor implements Serializable {
     private List<Turma> turma;
 
 
-    public List<Estoque> getEstoque() {
-        return estoque;
-    }
-
-    public void setEstoque(List<Estoque> estoque) {
-        this.estoque = estoque;
-    }
 
     public List<MembroSetor> getMembroSetor() {
         return membroSetor;

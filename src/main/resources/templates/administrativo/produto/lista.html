@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
 
 
-    <title>lista do Estoque</title>
+    <title>lista do Produto</title>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"></link>
@@ -33,7 +33,7 @@
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr6yBc0QQ1CCxo4CnFnx2FS49M24saWf5u5g&s"
                  alt="Logo" width="40" height="40" class="rounded-circle">
-            <span class="ms-3 text-white font-weight-bold"> Lista do Estoque </span>
+            <span class="ms-3 text-white font-weight-bold"> Lista do Produto </span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
@@ -44,7 +44,7 @@
                 <li class="nav-item"><a class="nav-link active" href="/administrativo"><i class="fa-solid fa-house"></i>
                     Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-info-circle"></i> Sobre</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-address-book"></i> Estoque</a>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-address-book"></i> Produto</a>
                 </li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
 </nav>
 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Lista Estoque</h1>
+    <h1 class="text-center mb-4">Lista Produto</h1>
     <table class="table table-striped" id="tabela">
         <thead class="bg-primary text-white">
         <tr>
@@ -60,24 +60,24 @@
             <td>Nome do Produto</td>
             <td>Quantidade</td>
             <td>Unidade de Medida</td>
-            <td>Setor de Saída</td>
+            <td>Observação</td>
             <td>Ação</td>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="estoque: ${listaEstoque}">
-            <td th:text="${estoque.id}"></td>
-            <td th:text="${estoque.produto}"></td>
-            <td th:text="${estoque.quantidade}"></td>
-            <td th:text="${estoque.medida}"></td>
-            <td th:text="${estoque.setor.setorNome}"></td>
+        <tr th:each="produto: ${listaProduto}">
+            <td th:text="${produto.id}"></td>
+            <td th:text="${produto.produtoNome}"></td>
+            <td th:text="${produto.quantidade}"></td>
+            <td th:text="${produto.medida}"></td>
+            <td th:text="${produto.observacao}"></td>
             <td colspan="2">
-                <a th:href="@{/editarEstoque/{id}(id=${estoque.id})}" class="btn btn-sm btn-primary">
+                <a th:href="@{/editarProduto/{id}(id=${produto.id})}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i> Editar
                 </a>
 
-                <a th:href="@{/removerEstoque/{id}(id=${estoque.id})}" class="btn btn-sm btn-danger">
+                <a th:href="@{/removerProduto/{id}(id=${produto.id})}" class="btn btn-sm btn-danger">
                     <i class="fa-solid fa-trash"></i> Excluir
                 </a>
             </td>
@@ -87,7 +87,7 @@
     </table>
 
     <a class="btn btn-danger" href="/administrativo"><i class="fa-solid fa-rotate-left"></i> Voltar</a>
-    <a class="btn btn-primary" href="/cadastroEstoque"><i class="fa-solid fa-address-card" style="color: white"></i>
+    <a class="btn btn-primary" href="/cadastroProduto"><i class="fa-solid fa-address-card" style="color: white"></i>
         Cadastrar</a>
 
 </div>

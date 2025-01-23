@@ -28,7 +28,7 @@ public class PessoaControle {
 
     @GetMapping("/cadastroPessoa")
     public ModelAndView cadastrar(Pessoa pessoa) {
-        if (pessoa ==null){
+        if (pessoa == null){
             pessoa = new Pessoa();
         }
         ModelAndView mv = new ModelAndView("administrativo/pessoa/cadastro");

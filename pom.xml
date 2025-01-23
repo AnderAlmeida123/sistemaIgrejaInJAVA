@@ -2,33 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0</version>
+        <version>3.4.0</version> <!-- Confirme a versão mais recente -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.projeto</groupId>
     <artifactId>sistemaIgreja</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sistemaIgreja</name>
     <description>sistema de info igreja</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,7 +36,6 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -57,7 +46,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.6.0</version>
-
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,8 +70,6 @@
             <artifactId>caelum-stella-core</artifactId>
             <version>2.1.2</version>
         </dependency>
-
-        <!--		dependencias utilizadas para validacao do backend-->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -94,10 +80,16 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.0.2</version>
         </dependency>
+
+        <!-- Dependência para validação do backend (já incluída com Spring Boot) -->
+        <!-- Não é necessário adicionar explicitamente SLF4J e Logback, pois são trazidos pelo Spring Boot -->
     </dependencies>
 
-    <!--	repositorio utilizado como validador de backend para cpf e cnpj-->
     <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
         <repository>
             <id>caelum-stella-repository</id>
             <url>https://caelum.github.io/caelum-stella/maven</url>
@@ -118,8 +110,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
